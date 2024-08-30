@@ -247,6 +247,8 @@ trait ActionContent
     {
         $properties = $activity->getChangesAttribute();
 
+        dd($properties);
+
         return [
             'log_name'    => $activity->log_name,
             'description' => $activity->description,
