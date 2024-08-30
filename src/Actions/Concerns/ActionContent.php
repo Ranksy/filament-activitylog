@@ -252,7 +252,7 @@ trait ActionContent
             'description' => $activity->description,
             'subject'     => $activity->subject,
             'event'       => $activity->event,
-            'properties'  => $properties,
+            'properties'  => $properties->toArray(),
             'batch_uuid'  => $activity->batch_uuid,
             'update'      => $activity->updated_at,
         ];
