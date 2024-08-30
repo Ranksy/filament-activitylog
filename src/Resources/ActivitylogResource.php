@@ -95,7 +95,7 @@ class ActivitylogResource extends Resource
                         Placeholder::make('event')
                             ->content(function (?Model $record): string {
                                 /** @phpstan-ignore-next-line */
-                                return $record?->event ? ucwords($record?->event) : '-';
+                                // return $record?->event ? ucwords($record?->event) : '-';
                             })
                             ->label(__('activitylog::forms.fields.event.label')),
 
@@ -110,7 +110,7 @@ class ActivitylogResource extends Resource
 
                 Section::make()
                     ->columns()
-                    ->visible(fn ($record) => $record->properties?->count() > 0)
+                    ->visible(fn($record) => $record->properties?->count() > 0)
                     ->schema(function (?Model $record) {
                         /** @var Activity&ActivityModel $record */
                         $properties = $record->properties->except(['attributes', 'old']);
@@ -125,13 +125,13 @@ class ActivitylogResource extends Resource
 
                         if ($old = $record->properties->get('old')) {
                             $schema[] = KeyValue::make('old')
-                                ->afterStateHydrated(fn (KeyValue $component) => $component->state($old))
+                                ->afterStateHydrated(fn(KeyValue $component) => $component->state($old))
                                 ->label(__('activitylog::forms.fields.old.label'));
                         }
 
                         if ($attributes = $record->properties->get('attributes')) {
                             $schema[] = KeyValue::make('attributes')
-                                ->afterStateHydrated(fn (KeyValue $component) => $component->state($attributes))
+                                ->afterStateHydrated(fn(KeyValue $component) => $component->state($attributes))
                                 ->label(__('activitylog::forms.fields.attributes.label'));
                         }
 
@@ -163,7 +163,7 @@ class ActivitylogResource extends Resource
         return TextColumn::make('log_name')
             ->label(__('activitylog::tables.columns.log_name.label'))
             ->badge()
-            ->formatStateUsing(fn ($state) => ucwords($state))
+            ->formatStateUsing(fn($state) => ucwords($state))
             ->sortable();
     }
 
@@ -171,12 +171,12 @@ class ActivitylogResource extends Resource
     {
         return TextColumn::make('event')
             ->label(__('activitylog::tables.columns.event.label'))
-            ->formatStateUsing(fn ($state) => ucwords($state))
+            ->formatStateUsing(fn($state) => ucwords($state))
             ->badge()
-            ->color(fn (string $state): string => match ($state) {
+            ->color(fn(string $state): string => match ($state) {
                 'draft'   => 'gray',
                 'updated' => 'warning',
-                'created' => 'success',
+                'created' => 'warning',
                 'deleted' => 'danger',
                 default   => 'primary',
             })
@@ -195,7 +195,7 @@ class ActivitylogResource extends Resource
 
                 return Str::of($state)->afterLast('\\')->headline() . ' # ' . $record->subject_id;
             })
-            ->hidden(fn (Livewire $livewire) => $livewire instanceof ActivitylogRelationManager);
+            ->hidden(fn(Livewire $livewire) => $livewire instanceof ActivitylogRelationManager);
     }
 
     public static function getCauserNameColumnCompoment(): Column
@@ -256,11 +256,11 @@ class ActivitylogResource extends Resource
                 return $query
                     ->when(
                         $data['created_from'],
-                        fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                        fn(Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
                     )
                     ->when(
                         $data['created_until'],
-                        fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                        fn(Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                     );
             });
     }
