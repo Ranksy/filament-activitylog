@@ -247,16 +247,50 @@ trait ActionContent
     {
         $properties = $activity->getChangesAttribute();
 
-        dd($properties);
+
 
         return [
             'log_name'    => $activity->log_name,
             'description' => $activity->description,
             'subject'     => $activity->subject,
             'event'       => $activity->event,
-            'properties'  => $properties->toArray(),
+            'properties'  => $this->prepareFormatData($properties->toArray()),
             'batch_uuid'  => $activity->batch_uuid,
             'update'      => $activity->updated_at,
         ];
+    }
+
+    function prepareFormatData($properties)
+    {
+        $formattedData = [];
+
+        if (isset($properties['attributes'])) {
+            $attributes = $properties['attributes'];
+            $oldAttributes = $properties['old'] ?? [];
+
+            foreach ($attributes as $key => $value) {
+                switch ($key) {
+                    case 'highlights':
+                        $formattedData['new_names'] = $value;
+                        break;
+                    case 'app_description':
+                        $formattedData['new_description'] = $value;
+                        break;
+                    case 'short_description':
+                        $formattedData['old_description'] = $oldAttributes[$key] ?? null;
+                        $formattedData['new_description'] = $value;
+                        break;
+                    case 'app_name':
+                        $formattedData['old_name'] = $oldAttributes[$key] ?? null;
+                        $formattedData['new_name'] = $value;
+                        break;
+                    default:
+                        $formattedData[$key] = $value;
+                        break;
+                }
+            }
+        }
+
+        return $formattedData;
     }
 }
