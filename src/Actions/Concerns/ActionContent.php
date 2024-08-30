@@ -106,9 +106,6 @@ trait ActionContent
                         ->configureTitleUsing($this->modifyTitleUsing)
                         ->shouldConfigureTitleUsing($this->shouldModifyTitleUsing),
                     TimeLinePropertiesEntry::make('activityData'),
-                    TextEntry::make('log_name')
-                        ->hiddenLabel()
-                        ->badge(),
                     TextEntry::make('updated_at')
                         ->hiddenLabel()
                         ->since()
@@ -250,7 +247,6 @@ trait ActionContent
             'description' => $activity->description,
             'subject'     => $activity->subject,
             'event'       => $activity->event,
-            'causer'      => $activity->causer,
             'properties'  => json_decode($activity->properties, true),
             'batch_uuid'  => $activity->batch_uuid,
             'update'      => $activity->updated_at,
