@@ -48,8 +48,8 @@ trait ActionContent
         $this->configureModal();
         $this->activitiesUsing        = null;
         $this->modifyTitleUsing       = null;
-        $this->shouldModifyTitleUsing = fn () => true;
-        $this->modifyQueryUsing       = fn ($builder) => $builder;
+        $this->shouldModifyTitleUsing = fn() => true;
+        $this->modifyQueryUsing       = fn($builder) => $builder;
         $this->modalHeading           = __('activitylog::action.modal.heading');
         $this->modalDescription       = __('activitylog::action.modal.description');
         $this->query                  = function (?Model $record) {
@@ -68,7 +68,6 @@ trait ActionContent
                         }
                     });
                 });
-
         };
     }
 
@@ -85,7 +84,7 @@ trait ActionContent
     {
         $this->slideOver()
             ->modalIcon('heroicon-o-eye')
-            ->modalFooterActions(fn () => [])
+            ->modalFooterActions(fn() => [])
             ->tooltip(__('activitylog::action.modal.tooltip'))
             ->icon('heroicon-o-bell-alert');
     }
@@ -247,10 +246,9 @@ trait ActionContent
             'description' => $activity->description,
             'subject'     => $activity->subject,
             'event'       => $activity->event,
-            'properties'  => json_decode($activity->properties, true),
+            'properties'  => json_decode($activity->properties, true)['attributes'] ?? [],
             'batch_uuid'  => $activity->batch_uuid,
             'update'      => $activity->updated_at,
         ];
     }
-
 }

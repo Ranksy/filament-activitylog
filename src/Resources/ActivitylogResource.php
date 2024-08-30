@@ -95,7 +95,7 @@ class ActivitylogResource extends Resource
                         Placeholder::make('event')
                             ->content(function (?Model $record): string {
                                 /** @phpstan-ignore-next-line */
-                                // return $record?->event ? ucwords($record?->event) : '-';
+                                return $record?->event ? ucwords($record?->event) : '-';
                             })
                             ->label(__('activitylog::forms.fields.event.label')),
 
@@ -103,7 +103,7 @@ class ActivitylogResource extends Resource
                             ->label(__('activitylog::forms.fields.created_at.label'))
                             ->content(function (?Model $record): string {
                                 /** @var Activity&ActivityModel $record */
-                                return $record->created_at ? "{$record->created_at->format(config('filament-activitylog.datetime_format', 'd/m/Y H:i:s'))}" : '-';
+                                return $record->created_at ? "{$record->created_at->diffForHumans()}" : '-';
                             }),
                     ])->grow(false),
                 ])->from('md'),
