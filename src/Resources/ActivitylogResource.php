@@ -79,13 +79,6 @@ class ActivitylogResource extends Resource
             ->schema([
                 Split::make([
                     Section::make([
-                        TextInput::make('causer_id')
-                            ->afterStateHydrated(function ($component, ?Model $record) {
-                                /** @phpstan-ignore-next-line */
-                                return $component->state($record->causer?->name);
-                            })
-                            ->label(__('activitylog::forms.fields.causer.label')),
-
                         TextInput::make('subject_type')
                             ->afterStateHydrated(function ($component, ?Model $record, $state) {
                                 /** @var Activity&ActivityModel $record */
@@ -99,13 +92,6 @@ class ActivitylogResource extends Resource
                             ->columnSpan('full'),
                     ]),
                     Section::make([
-                        Placeholder::make('log_name')
-                            ->content(function (?Model $record): string {
-                                /** @var Activity&ActivityModel $record */
-                                return $record->log_name ? ucwords($record->log_name) : '-';
-                            })
-                            ->label(__('activitylog::forms.fields.log_name.label')),
-
                         Placeholder::make('event')
                             ->content(function (?Model $record): string {
                                 /** @phpstan-ignore-next-line */
