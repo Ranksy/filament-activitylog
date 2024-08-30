@@ -23,7 +23,7 @@ class TimeLinePropertiesEntry extends Entry
     {
         $this
             ->hiddenLabel()
-            ->modifyState(fn ($state) => $this->modifiedProperties($state));
+            ->modifyState(fn($state) => $this->modifiedProperties($state));
     }
 
     private function modifiedProperties($state): ?HtmlString
@@ -32,7 +32,7 @@ class TimeLinePropertiesEntry extends Entry
 
         if (! empty($properties)) {
             $changes    = $this->getPropertyChanges($properties);
-            $causerName = $this->getCauserName($state['causer']);
+            $causerName = '';
 
             return new HtmlString(sprintf('%s %s the following: <br>%s', $causerName, $state['event'], implode('<br>', $changes)));
         }
@@ -73,7 +73,7 @@ class TimeLinePropertiesEntry extends Entry
 
     private function getNewValues(array $newValues): array
     {
-        return array_map(fn ($key, $value) => "- {$key} <strong>" . htmlspecialchars($this->formatNewValue($value)) . '</strong>', array_keys($newValues), $newValues);
+        return array_map(fn($key, $value) => "- {$key} <strong>" . htmlspecialchars($this->formatNewValue($value)) . '</strong>', array_keys($newValues), $newValues);
     }
 
     private function formatNewValue($value): string

@@ -48,7 +48,7 @@ class TimeLineTitleEntry extends Entry
     {
         $this
             ->hiddenLabel()
-            ->modifyState(fn ($state) => $this->modifiedTitle($state));
+            ->modifyState(fn($state) => $this->modifiedTitle($state));
     }
 
     private function modifiedTitle($state): string|HtmlString
@@ -58,7 +58,7 @@ class TimeLineTitleEntry extends Entry
         } else {
             if ($state['description'] == $state['event']) {
                 $className  = Str::lower(Str::snake(class_basename($state['subject']), ' '));
-                $causerName = $this->getCauserName($state['causer']);
+                $causerName = '';
                 $update_at  = Carbon::parse($state['update'])->translatedFormat(config('filament-activitylog.datetime_format'));
 
                 return new HtmlString(
@@ -75,5 +75,4 @@ class TimeLineTitleEntry extends Entry
 
         return '';
     }
-
 }
