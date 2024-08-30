@@ -232,6 +232,10 @@ trait ActionContent
     {
         $activities = $this->getActivities($record, $relations);
 
+        foreach ($activities as $activity) {
+            $activity;
+        }
+
         return $activities->transform(function ($activity) {
             $activity->activityData = $this->formatActivityData($activity);
 
@@ -239,14 +243,16 @@ trait ActionContent
         });
     }
 
-    protected function formatActivityData($activity): array
+    protected function formatActivityData(Activity $activity): array
     {
+        $properties = $activity->getChangesAttribute();
+
         return [
             'log_name'    => $activity->log_name,
             'description' => $activity->description,
             'subject'     => $activity->subject,
             'event'       => $activity->event,
-            'properties'  => json_decode($activity->properties, true)['attributes'] ?? [],
+            'properties'  => $properties,
             'batch_uuid'  => $activity->batch_uuid,
             'update'      => $activity->updated_at,
         ];
